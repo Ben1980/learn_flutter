@@ -7,12 +7,25 @@ import './widgets/transaction_list.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+
+  final ThemeData theme = ThemeData(
+    primarySwatch: Colors.purple,
+  );
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Flutter App',
+    return MaterialApp(
+      title: 'Personal Expenses',
+      theme: theme.copyWith(
+        colorScheme: theme.colorScheme.copyWith(
+          secondary: Colors.amber,
+        ),
+      ),
+      //theme: ThemeData(
+      //  primarySwatch: Colors.purple,
+      //  accentColor: Colors.amber,
+      //),
       home: MyHomePage(),
     );
   }
@@ -71,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter App'),
+        title: const Text('Personal Expenses'),
         actions: [
           IconButton(
             onPressed: () => _startAddNewTransaction(context),
