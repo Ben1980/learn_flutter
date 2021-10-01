@@ -11,6 +11,30 @@ class MyApp extends StatelessWidget {
 
   final ThemeData theme = ThemeData(
     primarySwatch: Colors.purple,
+    fontFamily: 'Quicksand',
+    textTheme: const TextTheme(
+      headline6: TextStyle(
+        fontFamily: 'OpenSans',
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    appBarTheme: AppBarTheme(
+      toolbarTextStyle: const TextTheme(
+        headline6: TextStyle(
+          fontFamily: 'OpenSans',
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ).bodyText2,
+      titleTextStyle: const TextTheme(
+        headline6: TextStyle(
+          fontFamily: 'OpenSans',
+          fontSize: 22,
+          fontWeight: FontWeight.bold,
+        ),
+      ).headline6,
+    ),
   );
 
   @override
@@ -26,7 +50,7 @@ class MyApp extends StatelessWidget {
       //  primarySwatch: Colors.purple,
       //  accentColor: Colors.amber,
       //),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
