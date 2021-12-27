@@ -119,8 +119,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    final mediaQuery = MediaQuery.of(context);
+    final isLandscape = mediaQuery.orientation == Orientation.landscape;
     final appBar = AppBar(
       title: const Text('Personal Expenses'),
       actions: [
@@ -130,13 +130,44 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ],
     );
-    final screenheight = MediaQuery.of(context).size.height -
+    final screenheight = mediaQuery.size.height -
         appBar.preferredSize.height -
-        MediaQuery.of(context).padding.top;
+        mediaQuery.padding.top;
     final txListWidget = Container(
       height: screenheight * 0.7,
       child: TransactionList(_userTransactions, _deleteTransaction),
     );
+    final scaleFactor = isLandscape ? 0.7 : 0.3;
+    final mainView = isLandscape
+        ? [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Show Chart'),
+                Switch(
+                  value: _showChart,
+                  onChanged: (value) {
+                    setState(() {
+                      _showChart = value;
+                    });
+                  },
+                ),
+              ],
+            ),
+            _showChart
+                ? Container(
+                    height: screenheight * scaleFactor,
+                    child: Chart(_recentTransactions),
+                  )
+                : txListWidget,
+          ]
+        : [
+            Container(
+              height: screenheight * scaleFactor,
+              child: Chart(_recentTransactions),
+            ),
+            txListWidget,
+          ];
 
     return Scaffold(
       appBar: appBar,
@@ -144,36 +175,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (isLandscape)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Show Chart'),
-                  Switch(
-                    value: _showChart,
-                    onChanged: (value) {
-                      setState(() {
-                        _showChart = value;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            if (!isLandscape)
-              Container(
-                height: screenheight * 0.3,
-                child: Chart(_recentTransactions),
-              ),
-            if (!isLandscape) txListWidget,
-            if (isLandscape)
-              _showChart
-                  ? Container(
-                      height: screenheight * 0.7,
-                      child: Chart(_recentTransactions),
-                    )
-                  : txListWidget,
-          ],
+          children: mainView,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
