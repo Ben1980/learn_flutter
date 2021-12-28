@@ -119,6 +119,47 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  List<Widget> _buildLandscapeContent(
+      double screenheight, double scaleFactor, Widget txListWidget) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Show Chart',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          Switch.adaptive(
+            activeColor: Theme.of(context).accentColor,
+            value: _showChart,
+            onChanged: (value) {
+              setState(() {
+                _showChart = value;
+              });
+            },
+          ),
+        ],
+      ),
+      _showChart
+          ? Container(
+              height: screenheight * scaleFactor,
+              child: Chart(_recentTransactions),
+            )
+          : txListWidget,
+    ];
+  }
+
+  List<Widget> _buildPortraitContent(
+      double screenheight, double scaleFactor, Widget txListWidget) {
+    return [
+      Container(
+        height: screenheight * scaleFactor,
+        child: Chart(_recentTransactions),
+      ),
+      txListWidget,
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -152,39 +193,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     final scaleFactor = isLandscape ? 0.7 : 0.3;
     final mainView = isLandscape
-        ? [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Show Chart',
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                Switch.adaptive(
-                  activeColor: Theme.of(context).accentColor,
-                  value: _showChart,
-                  onChanged: (value) {
-                    setState(() {
-                      _showChart = value;
-                    });
-                  },
-                ),
-              ],
-            ),
-            _showChart
-                ? Container(
-                    height: screenheight * scaleFactor,
-                    child: Chart(_recentTransactions),
-                  )
-                : txListWidget,
-          ]
-        : [
-            Container(
-              height: screenheight * scaleFactor,
-              child: Chart(_recentTransactions),
-            ),
-            txListWidget,
-          ];
+        ? _buildLandscapeContent(screenheight, scaleFactor, txListWidget)
+        : _buildPortraitContent(screenheight, scaleFactor, txListWidget);
 
     final pageBody = SafeArea(
       child: SingleChildScrollView(
