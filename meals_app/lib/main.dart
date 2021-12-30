@@ -40,7 +40,8 @@ class MyApp extends StatelessWidget {
         FiltersScreen.routeName: (cty) => const FiltersScreen(),
       },
       onUnknownRoute: (settings) {
-        return MaterialPageRoute(builder: (context) => CategoryMealsScreen());
+        return MaterialPageRoute(
+            builder: (context) => const CategoryMealsScreen());
       },
     );
   }
