@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
 
-import 'package:flutter/foundation.dart';
-
 class Product with ChangeNotifier {
   final String id;
   final String title;
